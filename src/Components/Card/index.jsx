@@ -1,34 +1,41 @@
-import { useContext } from "react";
-import { PlusIcon, CheckIcon } from "@heroicons/react/16/solid";
-import { ShoppingCartContext } from "../../Context";
+import { useContext } from "react"
+import { PlusIcon, CheckIcon } from "@heroicons/react/16/solid"
+import { ShoppingCartContext } from "../../Context"
 
 const Card = (data) => {
-  const context = useContext(ShoppingCartContext);
+  const context = useContext(ShoppingCartContext)
 
   const showProduct = (productDetail) => {
-    context.openProductDetail();
-    context.setProductToShow(productDetail);
-  };
+    context.openProductDetail()
+    context.setProductToShow(productDetail)
+  }
 
   const addProductToCart = (event, item) => {
-    context.setIsPresentInOrder(false);
-    event.stopPropagation();
-    context.setCount(context.count + 1);
-    context.setCartProducts([...context.cartProducts, item]);
-    context.openCheckoutSideMenu();
-    context.closeProductDetail();
-  };
-
+    context.setIsPresentInOrder(false)
+    event.stopPropagation()
+    context.setCount(context.count + 1)
+    context.setCartProducts([...context.cartProducts, item])
+    context.openCheckoutSideMenu()
+    context.closeProductDetail()
+  }
+  const handleImageError = (e) => {
+    // Fallback options (pick one):
+    e.target.src = `https://picsum.photos/200/300?random=${data.data.id}` // Random image from Lorem Picsum
+    // or
+    // e.target.src = `https://placehold.co/200x300?text=${data.data.title}` // Text placeholder
+    // or
+    // e.target.src = `https://source.unsplash.com/random/200x300?sig=${data.data.id}` // Random Unsplash
+  }
   const renderIcon = (id) => {
     const isInCart =
-      context.cartProducts.filter((product) => product.id === id).length > 0;
+      context.cartProducts.filter((product) => product.id === id).length > 0
 
     if (isInCart) {
       return (
         <div className="absolute top-0 right-0 flex justify-center bg-black items-center w-6 h-6 rounded-full m-2 p-1">
           <CheckIcon className="h-6 w-6 text-white" />
         </div>
-      );
+      )
     } else {
       return (
         <div
@@ -37,9 +44,9 @@ const Card = (data) => {
         >
           <PlusIcon className="h-6 w-6 text-black" />
         </div>
-      );
+      )
     }
-  };
+  }
 
   return (
     <div
@@ -54,6 +61,7 @@ const Card = (data) => {
           className="w-full h-full object-cover rounded-lg"
           src={data.data.images[0]}
           alt={data.data.title}
+          onError={handleImageError}
         />
         {renderIcon(data.data.id)}
       </figure>
@@ -62,7 +70,7 @@ const Card = (data) => {
         <span className="text-lg font-medium">${data.data.price}</span>
       </p>
     </div>
-  );
-};
+  )
+}
 
-export default Card;
+export default Card
